@@ -54,7 +54,7 @@ export function HeroBanner() {
 }
 
 export function BenefitsSection() {
-  return <section className="mf-section mf-benefits"><div className="mf-benefit-heading"><div className="mf-eyebrow">Why Maxforce IT Solution?</div><h2>Everything You Need to Learn, Create &amp; Grow</h2><p className="mf-lead">Practical digital products designed to help you save time, gain knowledge and turn ideas into action.</p></div><div className="mf-benefit-grid">{benefits.map(({ icon: Icon, title, text }, index) => <article key={title}><div className="mf-benefit-top"><span className="mf-icon"><Icon size={25} /></span><span className="mf-benefit-number">0{index + 1}</span></div><div className="mf-benefit-copy"><h3>{title}</h3><p>{text}</p></div></article>)}</div></section>;
+  return <section className="mf-section mf-benefits"><div className="mf-eyebrow">Why Maxforce IT Solution?</div><h2>Everything You Need to Learn, Create &amp; Grow</h2><p className="mf-lead">Practical digital products designed to help you save time, gain knowledge and turn ideas into action.</p><div className="mf-benefit-grid">{benefits.map(({ icon: Icon, title, text }) => <article key={title}><span className="mf-icon"><Icon size={25} /></span><h3>{title}</h3><p>{text}</p></article>)}</div></section>;
 }
 
 export function IndustriesSection() {
