@@ -4,6 +4,7 @@ import { Product } from "@/models";
 import { ProductDetailClient } from "@/components/storefront/ProductDetailClient";
 import { ProductCard } from "@/components/storefront/ProductCard";
 import { ProductReviews } from "@/components/storefront/ProductReviews";
+import { CourseDetails } from "@/components/storefront/CourseDetails";
 import { IProduct } from "@/models/Product";
 import type { Metadata } from "next";
 
@@ -46,6 +47,13 @@ export default async function ProductPage({ params }: { params: { slug: string }
   return (
     <main className="product-page mx-auto max-w-7xl px-5 py-10 md:px-8">
       <ProductDetailClient product={JSON.parse(JSON.stringify(product))} />
+      {product.productType === "course" && (
+        <CourseDetails
+          slug={product.slug}
+          title={product.title}
+          description={product.description}
+        />
+      )}
       <ProductReviews productId={String((product as { _id: unknown })._id)} />
       {related.length > 0 && (
         <section className="detail-related mt-10">
