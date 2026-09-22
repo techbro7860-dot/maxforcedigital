@@ -2,8 +2,8 @@
  * Safe Maxforce WordPress/WooCommerce importer.
  *
  * Dry-runs by default. Pass --write only after reviewing the printed allowlist.
- * Imported digital products stay inactive until an admin attaches a protected
- * asset or external course URL and selects the appropriate delivery mode.
+ * Imported digital products use manual fulfilment: checkout remains available
+ * and an administrator sends the course/download link after payment.
  */
 import dotenv from "dotenv";
 import path from "path";
@@ -113,9 +113,9 @@ async function main() {
         category: category._id, price: regular || sale || 1,
         discountPrice: sale > 0 && sale < regular ? sale : undefined,
         stock: 0, variants: [], variantCombinations: [], tags: [categorySlug],
-        productType: classify(categorySlug), deliveryMode: "none",
+        productType: classify(categorySlug), deliveryMode: "manual",
         isFeatured: categorySlug === "courses", isBestseller: false,
-        isActive: false,
+        isActive: true,
       } },
       { upsert: true, new: true }
     );
@@ -135,8 +135,8 @@ async function main() {
       { upsert: true }
     );
   }
-  console.log(`Imported ${approvedProducts.length} approved products as inactive and ${approvedPosts.length} approved posts.`);
-  console.log("Attach protected delivery details in Admin, then activate each product.");
+  console.log(`Imported ${approvedProducts.length} active products with manual fulfilment and ${approvedPosts.length} approved posts.`);
+  console.log("Customers can complete payment; an administrator must send each access link after purchase.");
   await mongoose.disconnect();
 }
 

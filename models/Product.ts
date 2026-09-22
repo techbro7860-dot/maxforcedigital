@@ -33,7 +33,7 @@ export interface IProduct {
   isBestseller: boolean;
   isActive: boolean;
   productType: "course" | "ebook" | "service" | "physical";
-  deliveryMode: "secure_download" | "external_link" | "none";
+  deliveryMode: "secure_download" | "external_link" | "manual" | "none";
   deliveryMetadata?: {
     secureAssetKey?: string;
     externalUrl?: string;
@@ -89,7 +89,7 @@ const ProductSchema = new Schema<IProduct>(
     },
     deliveryMode: {
       type: String,
-      enum: ["secure_download", "external_link", "none"],
+      enum: ["secure_download", "external_link", "manual", "none"],
       default: "none",
     },
     // Never included in ordinary product queries or public API responses.

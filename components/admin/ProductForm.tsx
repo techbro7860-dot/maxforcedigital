@@ -26,7 +26,7 @@ interface InitialProductData {
   variants?: VariantAttribute[];
   variantCombinations?: VariantCombination[];
   productType?: "course" | "ebook" | "service" | "physical";
-  deliveryMode?: "secure_download" | "external_link" | "none";
+  deliveryMode?: "secure_download" | "external_link" | "manual" | "none";
   deliveryMetadata?: { secureAssetKey?: string; externalUrl?: string };
 }
 
@@ -213,6 +213,7 @@ export function ProductForm({ categories, initialData, productId }: ProductFormP
             className="w-full rounded-md border px-3 py-2 disabled:bg-muted/30"
           >
             <option value="none">Not configured</option>
+            <option value="manual">Manual fulfilment by admin</option>
             <option value="secure_download">Secure download</option>
             <option value="external_link">Protected external access</option>
           </select>

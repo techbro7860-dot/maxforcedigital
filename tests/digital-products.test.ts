@@ -68,6 +68,16 @@ test("inactive digital drafts may be saved before delivery is configured", () =>
   assert.equal(parsed.success, true);
 });
 
+test("active digital products may use manual admin fulfilment", () => {
+  const parsed = productSchema.safeParse({
+    ...baseProduct,
+    productType: "course",
+    deliveryMode: "manual",
+    isActive: true,
+  });
+  assert.equal(parsed.success, true);
+});
+
 test("private delivery metadata is excluded from product queries by default", () => {
   assert.equal(Product.schema.path("deliveryMetadata").options.select, false);
 });

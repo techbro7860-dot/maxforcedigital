@@ -38,7 +38,7 @@ export const productSchema = z.object({
   variantCombinations: z.array(variantCombinationSchema).default([]),
   stock: z.number().min(0).default(0),
   productType: z.enum(["course", "ebook", "service", "physical"]).default("physical"),
-  deliveryMode: z.enum(["secure_download", "external_link", "none"]).default("none"),
+  deliveryMode: z.enum(["secure_download", "external_link", "manual", "none"]).default("none"),
   deliveryMetadata: deliveryMetadataSchema.optional(),
 }).superRefine((product, ctx) => {
   const digital = product.productType === "course" || product.productType === "ebook";
@@ -57,7 +57,7 @@ export const productSchema = z.object({
   if (product.deliveryMode === "external_link" && !product.deliveryMetadata?.externalUrl) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["deliveryMetadata", "externalUrl"], message: "An external access URL is required" });
   }
-  if (product.deliveryMode === "none" && product.deliveryMetadata && Object.values(product.deliveryMetadata).some(Boolean)) {
+  if (["manual", "none"].includes(product.deliveryMode) && product.deliveryMetadata && Object.values(product.deliveryMetadata).some(Boolean)) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["deliveryMetadata"], message: "Delivery metadata requires a delivery method" });
   }
 });

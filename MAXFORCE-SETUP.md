@@ -22,10 +22,10 @@ Review the approved and excluded post slugs, then write to MongoDB:
 npm run import:maxforce -- --write
 ```
 
-Imported courses and eBooks remain inactive. In Admin → Products, attach a
-private Cloudinary asset or an HTTPS course access URL, select the delivery
-mode, and activate each product. This prevents a paid product from launching
-without fulfilment configured.
+Imported courses and eBooks are active with manual fulfilment. Customers can
+complete checkout, and an administrator sends the course or download link
+after confirming payment. Products can later be changed to secure-download or
+protected external-link delivery in Admin → Products.
 
 ## Payment setup
 
