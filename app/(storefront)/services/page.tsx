@@ -1,0 +1,8 @@
+import Link from "next/link";
+import { getSiteContent } from "@/lib/site-content";
+
+export const dynamic = "force-dynamic";
+export default async function ServicesPage() {
+  const { services } = await getSiteContent();
+  return <main className="mx-auto max-w-6xl px-5 py-16"><p className="font-semibold text-primary">WHAT WE DO</p><h1 className="mt-3 text-4xl font-bold sm:text-5xl">Digital expertise from strategy to scale</h1><p className="mt-5 max-w-3xl text-lg leading-8 text-gray-600">Maxforce Digital brings consulting, design, engineering, infrastructure, automation and marketing together. Choose a focused service or work with one coordinated team across the complete digital lifecycle.</p><div className="mt-12 grid gap-6 md:grid-cols-2">{services.filter((s: any) => s.isActive).map((service: any) => <Link key={service.slug} href={`/services/${service.slug}`} className="rounded-2xl border p-7 transition hover:border-primary hover:shadow-sm"><h2 className="text-2xl font-semibold">{service.title}</h2><p className="mt-3 leading-7 text-gray-600">{service.summary}</p><span className="mt-5 inline-block font-semibold text-primary">Explore service →</span></Link>)}</div><section className="mt-14 rounded-2xl bg-primary px-7 py-10 text-primary-foreground sm:px-10"><h2 className="text-3xl font-bold">Not sure where to start?</h2><p className="mt-3 max-w-2xl leading-7">Tell us the outcome you need. We’ll help define the right first step, delivery approach and realistic scope.</p><Link href="/contact-us" className="mt-6 inline-block rounded-lg bg-white px-5 py-3 font-semibold text-primary">Discuss your project</Link></section></main>;
+}

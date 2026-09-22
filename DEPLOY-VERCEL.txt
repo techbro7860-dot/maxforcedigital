@@ -1,0 +1,43 @@
+DEPLOYING TO VERCEL
+===================
+
+Push this repository's main branch to the GitHub repository connected to Vercel.
+The live store is https://store-lovat-mu.vercel.app/.
+
+.env.local is local-only and must never be committed. Configure these variables
+in Vercel Project Settings -> Environment Variables, then redeploy:
+
+MONGODB_URI             MongoDB Atlas or another replica set (transactions required)
+JWT_ACCESS_SECRET       Your production secret
+JWT_REFRESH_SECRET      Your production secret
+NEXTAUTH_SECRET         Your production secret
+NEXTAUTH_URL            https://store-lovat-mu.vercel.app
+PAYPLUS_API_KEY          PayPlus Developer -> Secret Access Key
+PAYPLUS_WEBHOOK_SECRET   PayPlus Developer -> Webhook Signing Secret
+
+For guest email verification:
+GUEST_OTP_REQUIRED=true
+OTP_CHANNEL=email
+EMAIL_SERVER_HOST
+EMAIL_SERVER_PORT
+EMAIL_SERVER_USER
+EMAIL_SERVER_PASSWORD
+EMAIL_FROM
+
+Optional image uploads:
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+
+PayPlus -> Developer -> Integration Settings -> Webhook Callback URL:
+https://store-lovat-mu.vercel.app/api/payments/payplus/webhook
+
+The active checkout uses PayPlus. No Razorpay credentials are required for it.
+Enable PayPlus in Admin -> Settings -> Commerce. The currency must be INR.
+Shipping is free on every order, including stores with old saved shipping fees.
+
+Product prices are database records, not Git files. Use the live admin product
+editor to change production prices. Never seed a production database.
+
+Before taking customer payments, complete a merchant-approved payment and verify
+the order, signed webhook, invoice, and stock. See PAYPLUS-SETUP.md for details.

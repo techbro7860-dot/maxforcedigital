@@ -1,0 +1,8 @@
+import Link from "next/link";
+import { getSiteContent } from "@/lib/site-content";
+
+export const dynamic = "force-dynamic";
+export default async function IndustriesPage() {
+  const { industries } = await getSiteContent();
+  return <main className="mx-auto max-w-6xl px-5 py-16"><p className="font-semibold text-primary">INDUSTRY SOLUTIONS</p><h1 className="mt-3 text-4xl font-bold sm:text-5xl">Technology shaped around how your sector works</h1><p className="mt-5 max-w-3xl text-lg leading-8 text-gray-600">Every industry has different customers, workflows and responsibilities. We combine reusable technical experience with discovery specific to your organization—without forcing a one-size-fits-all solution.</p><div className="mt-12 grid gap-6 md:grid-cols-2">{industries.filter((s: any) => s.isActive).map((item: any) => <Link key={item.slug} href={`/industries/${item.slug}`} className="rounded-2xl border p-7 transition hover:border-primary hover:shadow-sm"><h2 className="text-2xl font-semibold">{item.title}</h2><p className="mt-3 leading-7 text-gray-600">{item.summary}</p><span className="mt-5 inline-block font-semibold text-primary">View solutions →</span></Link>)}</div><section className="mt-14 rounded-2xl bg-gray-50 p-8"><h2 className="text-2xl font-bold">Your industry is not listed?</h2><p className="mt-3 max-w-2xl leading-7 text-gray-600">Our discovery process starts with your users, operations and goals. Talk to us about the specific environment your solution needs to support.</p><Link href="/contact-us" className="mt-5 inline-block font-semibold text-primary">Contact our team →</Link></section></main>;
+}

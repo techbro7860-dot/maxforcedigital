@@ -1,0 +1,16 @@
+"use client";
+
+import { useEffect, useState } from "react";
+const empty = { title: "", slug: "", excerpt: "", content: "", coverImage: "", metaTitle: "", metaDescription: "", isPublished: false };
+export default function AdminPostsPage() {
+  const [posts, setPosts] = useState<any[]>([]); const [form, setForm] = useState<any>(empty); const [editing, setEditing] = useState<string | null>(null); const [error, setError] = useState("");
+  async function load() { const response = await fetch("/api/posts?admin=1"); const data = await response.json(); setPosts(data.posts ?? []); }
+  useEffect(() => { load(); }, []);
+  async function save(event: React.FormEvent) { event.preventDefault(); setError(""); const response = await fetch(editing ? `/api/posts/${editing}` : "/api/posts", { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) }); const data = await response.json(); if (!response.ok) return setError(data.error || "Save failed"); setForm(empty); setEditing(null); load(); }
+  function edit(post: any) { setEditing(post._id); setForm({ ...empty, ...post }); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  async function remove(id: string) { if (confirm("Delete this post?")) { await fetch(`/api/posts/${id}`, { method: "DELETE" }); load(); } }
+  const input = "w-full rounded-md border px-3 py-2";
+  return <div className="max-w-6xl"><h1 className="text-2xl font-bold">Blog posts</h1><form onSubmit={save} className="mt-6 grid gap-4 rounded-xl border p-5 md:grid-cols-2">{["title", "slug", "coverImage", "metaTitle", "metaDescription"].map(key => <label key={key} className="text-sm capitalize">{key.replace(/([A-Z])/g, " $1")}<input className={`${input} mt-1`} value={form[key]} onChange={e => setForm({ ...form, [key]: e.target.value })} required={key === "title"} /></label>)}<label className="text-sm md:col-span-2">Excerpt<textarea className={`${input} mt-1`} value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} /></label><label className="text-sm md:col-span-2">Content<textarea className={`${input} mt-1 min-h-64`} required value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} /></label><label className="flex items-center gap-2"><input type="checkbox" checked={form.isPublished} onChange={e => setForm({ ...form, isPublished: e.target.checked })} /> Published</label><div className="flex gap-3"><button className="rounded-md bg-primary px-4 py-2 text-primary-foreground">{editing ? "Update" : "Create"}</button>{editing && <button type="button" onClick={() => { setEditing(null); setForm(empty); }} className="rounded-md border px-4 py-2">Cancel</button>}</div>{error && <p className="text-red-600 md:col-span-2">{error}</p>}</form>
+    <div className="mt-8 space-y-3">{posts.map(post => <article key={post._id} className="flex items-center justify-between rounded-lg border p-4"><div><h2 className="font-semibold">{post.title}</h2><p className="text-xs text-gray-500">/{post.slug} · {post.isPublished ? "Published" : "Draft"}</p></div><div className="flex gap-2"><button onClick={() => edit(post)} className="rounded border px-3 py-1">Edit</button><button onClick={() => remove(post._id)} className="rounded border px-3 py-1 text-red-600">Delete</button></div></article>)}</div>
+  </div>;
+}
